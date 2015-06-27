@@ -4,5 +4,5 @@
  * you can uncomment out the below line and use WP for user authenitcation
  */
 
-require_once('wp-basic.php');
+//require_once('wp-basic.php');
 ?>
