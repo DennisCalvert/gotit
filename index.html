@@ -18,9 +18,10 @@
         <div id="main" class="main">
             <div ng-controller="SwipeCtrl" id="slider">
                 <div ng-repeat="item in list track by $index" class="slide-wrapper">
-                    <div id="{{$index}}" data-itemId="{{item.ID}}"class="slide">
-                            {{item.name}}
-                    </div> 
+                    <div id="{{$index}}" class="slide">
+                            {{item}}
+                        <button ng-click="deleteItem($index)" type="button" class="btn-delete">X</button>
+                    </div>
                 </div>
             </div>
         </div>             
