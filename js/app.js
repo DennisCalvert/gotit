@@ -2,9 +2,7 @@ var app = angular.module('GotItApp', [])
 
 app.controller('ListController', ['$scope', 'ListService', function ($scope, ListService) {
 
-    ListService.get().success(function (data) {
-        $scope.list = data;
-    });
+    $scope.list = ListService.get();
 
     $scope.removeItem = function (index) {
         $scope.list.splice(index, 1);
@@ -15,13 +13,14 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
     }
 
     $scope.insertNew = function () {
-        ListService.post($scope.newItem).success(function (data) {
-            $scope.list.push(data);
-            $scope.newItem = "";
-        });
-
+        $scope.list = ListService.post($scope.newItem);
+        $scope.newItem = "";
         $scope.toggleMenu();
     };
+
+    $scope.deleteItem = function (index) {
+        $scope.list = ListService.del(index);
+    }
 
     $scope.toggleMenu = function () {
         var txtInput = document.getElementById('txtNewItem'),
@@ -39,7 +38,7 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
 
 } ]);
 
-app.controller('SwipeCtrl', ['$scope', 'ListService', function ($scope, ListService) {
+app.controller('SwipeCtrl', ['$scope', function ($scope) {
 
     var swipe = {
 
@@ -100,9 +99,7 @@ app.controller('SwipeCtrl', ['$scope', 'ListService', function ($scope, ListServ
             if (this.movex > (this.slideWidth / 2)) {
                 event.target.style.transform = 'translate3d(-100%,0,0)';
                 event.target.parentNode.classList.add('fold');
-                ListService.del(event.target.dataset.itemid);
-                //$scope.list.splice(event.target.id, 1);
-                //$scope.$apply();              
+                $scope.list = ListService.del(index);
             } else {
                 event.target.style.transform = 'translate3d(0,0,0)';
             }
@@ -116,56 +113,23 @@ app.controller('SwipeCtrl', ['$scope', 'ListService', function ($scope, ListServ
 app.factory('ListService', ['$http', function ($http) {
 
     return {
-        params: {
-            id: null,
-            name: null,
-            details: null
-        },
-
-        xmlhttp: function (req) {
-
-            return $http(req)
-                .success(function (data) {
-                    return data;
-                })
-                .error(function (err) {
-                    return err;
-                });
-        },
 
         get: function () {
-
-            var req = {
-                method: 'GET',
-                url: 'data/index.php'
-            }
-            return this.xmlhttp(req);
+            return localStorage.getItem('list').split(",");
         },
 
         post: function (itemName) {
-
-            this.params.name = itemName;
-
-            var req = {
-                method: 'POST',
-                url: 'data/index.php',
-                data: this.params
-            }
-
-            return this.xmlhttp(req);
+            var list = localStorage.getItem('list').split(",");
+            list.push(itemName);
+            localStorage.setItem('list', list);
+            return localStorage.getItem('list').split(",");
         },
 
-        del: function (itemId) {
-
-            this.params.id = itemId;
-
-            var req = {
-                method: 'DELETE',
-                url: 'data/index.php',
-                data: this.params
-            };
-
-            return this.xmlhttp(req);
+        del: function (index) {
+            var listArray = localStorage.getItem('list').split(",");
+            listArray.splice(index, 1);
+            localStorage.setItem('list', listArray);
+            return localStorage.getItem('list').split(",");
         }
-    }
+    };
 } ]);
