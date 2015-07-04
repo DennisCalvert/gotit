@@ -47,6 +47,7 @@ body {
 .slide {
     background-color: #fff;
     padding: 20px;
+    transition: opacity 0.2s ease;
 }
 
 .isSliding {
@@ -54,8 +55,7 @@ body {
 }
 
 .isTouched {
-    background-color: #494949;
-    color: #fff;
+    opacity: .7;
 }
 
 .fold {
@@ -100,8 +100,8 @@ body {
 }
 .sub-menu {
     height: 85vh;
-    transform: translateY(-200%);
-    transition: transform 0.3s ease, opacity 0.4s ease;
+    transform: translateX(-200%);
+    transition: transform 0.6s ease, opacity 0.3s ease;
     position: absolute;
     top: 15vh;
     width: 100%;
@@ -122,6 +122,6 @@ body {
 }
 
 .slide-in {
-    transform: translateY(0);
+    transform: translateX(0);
     opacity: 1;
 }
