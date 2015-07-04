@@ -4,6 +4,8 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
 
     $scope.list = ListService.get();
 
+    $scope.newItem = "";
+
     $scope.removeItem = function (index) {
         $scope.list.splice(index, 1);
     };
@@ -34,6 +36,7 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
             main.style.display = 'block';
         }
         menu.classList.toggle('slide-in');
+        document.getElementById('btnInsert').classList.toggle('cancel');
     };
 
     var swipe = {

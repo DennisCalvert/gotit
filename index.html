@@ -12,7 +12,7 @@
         <div class="header">
             <div class="container header-sticky">            
                 <h1>Got_It!</h1>   
-                <button ng-click="toggleMenu()" type="button" id="btnInsert" class="btn-insert">+</button>
+                <button ng-click="toggleMenu()" ng-class="" type="button" id="btnInsert" class="btn-insert"></button>
             </div>        
         </div>
         <div id="main" class="main">
@@ -28,7 +28,7 @@
         <div id="menuAddItem" class="sub-menu">
             <div class="control-wrapper">
                 <input ng-model="newItem" type="text" id="txtNewItem" class="form-control" placeholder="new item...">
-                <button ng-click="insertNew()" type="button" class="btn btn-success">Save</button>
+                <button ng-click="insertNew()" ng-class="{'disabled': newItem.length < 1}" type="button" class="btn btn-success">Save</button>
             </div>
         </div>
         <script src="js/app.js"></script>

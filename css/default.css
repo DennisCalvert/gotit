@@ -12,11 +12,13 @@ body {
     background-color: #004067;
     color: #fff;
 }
-@media screen and (max-width: 990px){
+
+@media screen and (max-width: 990px) {
     .header-sticky {
         height: 10vh;
     }
 }
+
 .main {
     margin-top: 75px;
 }
@@ -75,12 +77,41 @@ body {
     top: 50%;
     right: 15px;
     transform: translateY(-50%);
+    transition: background-color 0.5s ease;
+    width: 45px;
+    height: 45px;
 }
-.btn-delete{
+
+.btn-insert:focus {
+    outline: none;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.btn-insert:after {
+    content: "+";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+}
+
+.btn-insert.cancel {
+    background-color: rgb(181, 48, 48);
+}
+
+.btn-insert.cancel:after {
+    content: "x";
+    transform: translate3d(-50%, -60%, 0);
+}
+
+.btn-delete {
     display: none;
 }
-@media screen and (min-width: 990px){
-    .btn-delete{
+
+@media screen and (min-width: 990px) {
+    .btn-delete {
         display: block;
         position: absolute;
         right: 25px;
@@ -94,10 +125,12 @@ body {
         border-radius: 50%;
         transition: opacity 0.2s ease;
     }
-    .btn-delete:hover{
+
+    .btn-delete:hover {
         opacity: 1;
     }
 }
+
 .sub-menu {
     height: 85vh;
     transform: translateX(-200%);
