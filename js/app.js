@@ -6,11 +6,11 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
 
     $scope.removeItem = function (index) {
         $scope.list.splice(index, 1);
-    }
+    };
 
     $scope.setTouchIndex = function (index) {
         $scope.touchIndex = index;
-    }
+    };
 
     $scope.insertNew = function () {
         $scope.list = ListService.post($scope.newItem);
@@ -20,7 +20,7 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
 
     $scope.deleteItem = function (index) {
         $scope.list = ListService.del(index);
-    }
+    };
 
     $scope.toggleMenu = function () {
         var txtInput = document.getElementById('txtNewItem'),
@@ -36,17 +36,12 @@ app.controller('ListController', ['$scope', 'ListService', function ($scope, Lis
         menu.classList.toggle('slide-in');
     };
 
-} ]);
-
-app.controller('SwipeCtrl', ['$scope', function ($scope) {
-
     var swipe = {
 
         slideWidth: document.body.clientWidth,
         touchstartx: undefined,
         touchmovex: undefined,
         movex: 0,
-        longTouch: undefined,
 
         init: function () {
             this.bindUIEvents();
@@ -61,45 +56,26 @@ app.controller('SwipeCtrl', ['$scope', function ($scope) {
         },
 
         start: function (event) {
-            if (!event.target.classList.contains('slide')) {
-                return;
-            }
-
+            if (!event.target.classList.contains('slide')) { return; }
             event.target.classList.remove('isSliding');
             event.target.classList.add('isTouched');
-
-            this.longTouch = false;
-            setTimeout(function () {
-                window.slider.longTouch = true;
-            }, 250);
-
-            this.touchstartx = event.touches[0].pageX;            
+            this.touchstartx = event.touches[0].pageX;
         },
 
         move: function (event) {
-            if (!event.target.classList.contains('slide')) {
-                return;
-            }
+            if (!event.target.classList.contains('slide')) { return; }
             this.touchmovex = event.touches[0].pageX;
-
             this.movex = this.touchstartx - this.touchmovex;
-            
             event.target.style.transform = 'translate3d(-' + this.movex + 'px,0,0)';
         },
 
         end: function (event) {
-            if (!event.target.classList.contains('slide')) {
-                return;
-            }
-
-            var absMove = Math.abs(this.slideWidth - this.movex);
-
+            if (!event.target.classList.contains('slide')) { return; }
             event.target.classList.add('isSliding');
-
             if (this.movex > (this.slideWidth / 2)) {
                 event.target.style.transform = 'translate3d(-100%,0,0)';
                 event.target.parentNode.classList.add('fold');
-                $scope.list = ListService.del(index);
+                $scope.deleteItem(event.target.id);
             } else {
                 event.target.style.transform = 'translate3d(0,0,0)';
             }
@@ -108,28 +84,28 @@ app.controller('SwipeCtrl', ['$scope', function ($scope) {
         }
     };
     swipe.init();
+
 } ]);
 
-app.factory('ListService', ['$http', function ($http) {
+app.factory('ListService', [function () {
 
     return {
-
         get: function () {
-            return localStorage.getItem('list').split(",");
+            return JSON.parse(localStorage.getItem('list'));
         },
 
         post: function (itemName) {
-            var list = localStorage.getItem('list').split(",");
+            var list = this.get() || [];
             list.push(itemName);
-            localStorage.setItem('list', list);
-            return localStorage.getItem('list').split(",");
+            localStorage['list'] = JSON.stringify(list);
+            return this.get();
         },
 
         del: function (index) {
-            var listArray = localStorage.getItem('list').split(",");
-            listArray.splice(index, 1);
-            localStorage.setItem('list', listArray);
-            return localStorage.getItem('list').split(",");
+            var list = this.get();
+            list.splice(index, 1);
+            localStorage['list'] = JSON.stringify(list);
+            return this.get();
         }
     };
 } ]);
